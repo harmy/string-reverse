@@ -16,7 +16,7 @@ source:
   properties:
     access_token_secret: github-token-std-string-reverse
     branch: master
-    repository: https://github.com/nathanpeck/string-reverse
+    repository: https://github.com/harmy/string-reverse
 
 # The deployment section defines the order the pipeline will deploy
 # to your environments.
@@ -26,7 +26,7 @@ stages:
       # Optional: use test commands to validate this stage of your build.
       test_commands:
         - npm install --prefix test
-        - APP_URL=https://reverse.test.std.string.services npm test --prefix test
+        - APP_URL=https://reverse.test.std.circsr.com npm test --prefix test
 
-    - # The name of the environment to deploy to.
-      name: prod
+    # - # The name of the environment to deploy to.
+    #   name: prod
