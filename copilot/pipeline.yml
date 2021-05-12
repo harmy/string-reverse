@@ -28,5 +28,5 @@ stages:
         - npm install --prefix test
         - APP_URL=https://reverse.test.std.circsr.com npm test --prefix test
 
-    # - # The name of the environment to deploy to.
-    #   name: prod
+    - # The name of the environment to deploy to.
+      name: prod
