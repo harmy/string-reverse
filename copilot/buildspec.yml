@@ -64,6 +64,8 @@ phases:
             repo=$(cat $CODEBUILD_SRC_DIR/infrastructure/$svc-$env.params.json | jq '.Parameters.ContainerImage' | sed 's/"//g');
             region=$(echo $repo | cut -d'.' -f4);
             $(aws ecr get-login --no-include-email --region $region);
+            echo $image_id $svc $tag
+            docker images
             docker tag $image_id $repo;
             docker push $repo;
             done;
