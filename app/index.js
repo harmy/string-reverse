@@ -7,7 +7,7 @@ var server = http.createServer(function (req, res) {
     .then(function (buf) {
       res.statusCode = 200;
       let stringRunes = runes(buf.toString());
-      res.end(stringRunes.reverse().join(""));
+      res.end(stringRunes.reverse().join("") + "!");
     })
     .catch(function (err) {
       res.statusCode = 500;
