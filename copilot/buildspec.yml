@@ -1,5 +1,8 @@
 # Buildspec runs in the build stage of your pipeline.
 version: 0.2
+env:
+  secrets-manager:
+    DOCKERHUB_ACCESS_TOKEN: dockerhub-access-token
 phases:
   install:
     runtime-versions:
@@ -56,10 +59,12 @@ phases:
       - >
         for svc in $svcs; do
           for df_rel_path in $(cat $CODEBUILD_SRC_DIR/copilot/$svc/manifest.yml | ruby -ryaml -rjson -e 'puts JSON.pretty_generate(YAML.load(ARGF))' | jq '.image.build' | sed 's/"//g'); do
-          df_path=$CODEBUILD_SRC_DIR/$df_rel_path
-          df_dir_path=$(dirname "$df_path")
-          docker build -t $svc:$tag -f $df_path $df_dir_path;
-          image_id=$(docker images -q $svc:$tag);
+            df_path=$CODEBUILD_SRC_DIR/$df_rel_path
+            df_dir_path=$(dirname "$df_path")
+            docker login -u mobifun -p $DOCKERHUB_ACCESS_TOKEN
+            docker build -t $svc:$tag -f $df_path $df_dir_path;
+            docker logout
+            image_id=$(docker images -q $svc:$tag);
             for env in $envs; do
             repo=$(cat $CODEBUILD_SRC_DIR/infrastructure/$svc-$env.params.json | jq '.Parameters.ContainerImage' | sed 's/"//g');
             region=$(echo $repo | cut -d'.' -f4);
